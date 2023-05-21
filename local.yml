@@ -1,4 +1,4 @@
-- hosts: all
+- hosts: localhost
   connection: local
   become: true
 
@@ -9,11 +9,11 @@
       cache_valid_time: 3600
 
   - name: Update all packages to their latest version
-  ansible.builtin.apt:
-    name: "*"
-    state: latest
+    ansible.builtin.apt:
+      name: "*"
+      state: latest
 
-  - name: install docker
+  - name: install apps
     apt:
       name: htop
-      state: present
+      state: latest
