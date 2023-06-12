@@ -1,0 +1,32 @@
+---
+
+# Deploy Jellyfin in Docker
+
+- hosts: localhost
+  become: yes
+
+  tasks:
+    - name: Deploy Jellyfin in Docker
+#      become_user: "{{ lookup('env','USER') }}"
+
+      community.docker.docker_container:
+        name: jellyfin4
+        image: jellyfin/jellyfin
+        user: 1000:1000
+#        env:
+#          - "PUID=1000"
+#          - "PGID=1000"
+#          - "TZ=america/new_york"
+#
+        volumes:
+          - /home/raf/docker/appdata/jellyfin2:/config
+          - /home/raf/media/tv:/data/tvshows
+          - /home/raf/media/movies:/data/movies
+
+        ports:
+          - "8096:8096"
+#          - 8920:8920 #optional
+#          - 7359:7359/udp #optional
+#          - 1900:1900/udp #optional
+
+        restart_policy: unless-stopped

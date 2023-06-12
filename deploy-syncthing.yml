@@ -1,0 +1,27 @@
+---
+
+# Deploy Syncthing in Docker
+
+- hosts: localhost
+  become: yes
+
+  tasks:
+    - name: Deploy Syncthing in Docker
+      become_user: "{{ lookup('env','USER') }}"
+
+      community.docker.docker_container:
+        name: syncthing
+        image: lscr.io/linuxserver/syncthing:latest
+        user: 1000:1000
+#
+        volumes:
+          - /home/raf/docker/appdata/syncthing:/config
+          - /home/raf/syncthing:/syncthingdata
+
+        ports:
+          - 8384:8384
+          - 22000:22000/tcp
+          - 22000:22000/udp
+          - 21027:21027/udp
+
+        restart_policy: unless-stopped
